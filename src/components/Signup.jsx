@@ -42,7 +42,7 @@ const Signup = () => {
   const { fetchUser } = UrlState();
 
   useEffect(() => {
-    if (error == null) {
+    if (error == null && data) {
       navigate(`/dashboard?${longLink ? `create-new=${longLink}` : ""}`);
       fetchUser();
     }

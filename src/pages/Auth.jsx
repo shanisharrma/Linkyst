@@ -6,7 +6,7 @@ import Signup from "@/components/Signup";
 import { UrlState } from "@/context";
 
 const Auth = () => {
-  const [searchParams] = useSearchParams();
+  let [searchParams] = useSearchParams();
   const longLink = searchParams.get("create-new");
   const navigate = useNavigate();
 
@@ -16,7 +16,7 @@ const Auth = () => {
     if (isAuthenticated && !loading) {
       navigate(`/dashboard?${longLink ? `create-new=${longLink}` : ""}`);
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, loading, navigate]);
 
   return (
     <div className="mt-16 flex flex-col items-center gap-10">
