@@ -61,18 +61,18 @@ export const createUrl = async (
 };
 
 export const getLongUrl = async (id) => {
-  const { data, error } = await supabase
-    .from("urls")
-    .select("id, original_url")
-    .or(`short_url.eq.${id},custom_url.eq.${id}`)
-    .single();
+  let { data: shortLinkData, error: shortLinkError } = await supabase
+    .from("urls") // Specifies the table to query
+    .select("id, original_url") // Specifies the columns to retrieve
+    .or(`short_url.eq.${id},custom_url.eq.${id}`) // OR condition to match either short_url or custom_url with the value of id
+    .single(); // Ensures only a single record is returned
 
-  if (error) {
-    console.error(error.message);
-    throw new Error("Error while fetching short URL");
+  if (shortLinkError && shortLinkError.code !== "PGRST116") {
+    console.error("Error fetching short link:", shortLinkError);
+    return;
   }
 
-  return data;
+  return shortLinkData;
 };
 
 export const getUrl = async ({ id, user_id }) => {
